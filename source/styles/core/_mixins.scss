@@ -1,0 +1,711 @@
+//============================================================
+//
+// Mixins
+//
+// @description Defines project related variables and mixins
+//
+//
+//
+// ---------- INDEX ----------
+//
+// @mixin spritesheet
+// @mixin graphic
+// @mixin icon20 & icon30 & icon50
+// @mixin thinArrow
+// @mixin text
+// @mixin triangle
+// @mixin dash
+// @mixin px -> em calculations
+// @mixin antialias
+// @mixin removeSpace
+// @mixin xCenterElement
+//
+//============================================================
+
+
+@function strip-units($value) {
+    @return $value / ($value * 0 + 1);
+}
+
+//============================================================
+//
+// fadeHex
+//
+// @param hex           : Hexidecimal colour value
+// @param opacity       : %
+//
+//============================================================
+
+@mixin fadeHex($hex, $opacity) {
+  background-color: $hex;
+  background-color: transparentize($hex, $opacity);
+}
+
+
+
+
+//============================================================
+//
+// spritesheet
+//
+// @param x               :  px, em, %
+// @param y               :  px, em, %
+// @param repeat          :  repeat, no-repeat
+//
+//============================================================
+
+@mixin spritesheet($x: 0px, $y: 0px, $repeat: no-repeat) {
+  background: transparent url("#{$SPRITESHEET}") $x $y $repeat; //ImageEmbed:skip
+  @include retina;
+}
+
+//============================================================
+//
+// Add retina version of the spritesheet
+//
+//============================================================
+
+@mixin retina {
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    background-image: url(unquote($SPRITESHEET2X)) !important;
+    background-size: $SPRITESHEETWIDTH $SPRITESHEETHEIGHT !important;
+  }
+}
+
+
+//============================================================
+//
+// graphic
+//
+// @param width           :  px
+// @param height          :  px
+// @param originX         :  px
+// @param originY         :  px
+// @param indexX          :  Number
+// @param indexY          :  Number
+// @param offsetX         :  px
+// @param offsetY         :  px
+// @param target          :  @INLINE | @BEFORE | @AFTER
+//
+//============================================================
+
+@mixin crop($width, $height, $originX, $originY, $indexX, $indexY, $offsetX, $offsetY) {
+  @include spritesheet($originX - $width * $indexX, $originY - $height * $indexY);  
+  background-color: transparent;
+  position: absolute;
+  display: block;
+  height: $height;
+  width: $width;
+  left: $offsetX;
+  top: $offsetY;
+}
+
+
+@mixin graphic($width, $height, $originX, $originY, $offsetX, $offsetY, $indexX, $indexY, $target, $position: $ABSOLUTE) {
+
+  // INLINE
+  @if $target == $INLINE {
+    @include crop($width, $height, $originX, $originY, $indexX, $indexY, $offsetX, $offsetY);
+  }
+  // BEFORE
+  @if $target == $BEFORE {
+    position: relative;
+    &:before {
+      @include crop($width, $height, $originX, $originY, $indexX, $indexY, $offsetX, $offsetY);
+      content: "";
+    }
+  }
+  // AFTER
+  @if $target == $AFTER {
+    position: relative;
+    &:after {
+      @include crop($width, $height, $originX, $originY, $indexX, $indexY, $offsetX, $offsetY);
+      content: "";
+    }
+  }
+}
+
+
+
+ 
+
+//============================================================
+//
+// icon20 & icon40 & icon50
+//
+// @param indexX          :  Number
+// @param indexY          :  Number
+// @param offsetX         :  px
+// @param offsetY         :  px
+// @param target          :  @INLINE | @BEFORE | @AFTER
+//
+//============================================================
+
+// Spritesheet offsets
+$icon20offsetY: 0px;
+$icon20offsetX: 0px;
+
+$icon30offsetY: -20px;
+$icon30offsetX: 0px;
+
+$icon40offsetY: -50px;
+$icon40offsetX: 0px;
+
+$icon100offsetY: -60px;
+$icon100offsetX: 0px;
+
+
+@mixin icon20($indexX, $indexY, $offsetX: 0px, $offsetY: 0px, $target: $AFTER, $position: $ABSOLUTE) {
+  @include graphic(20px, 20px, $icon20offsetX, $icon20offsetY, $offsetX, $offsetY, $indexX, $indexY, $target, $position);
+}
+
+@mixin icon30($indexX, $indexY, $offsetX: 0px, $offsetY: 0px, $target: $AFTER, $position: $ABSOLUTE) {
+  @include graphic(30px, 30px, $icon30offsetX, $icon30offsetY, $offsetX, $offsetY, $indexX, $indexY, $target, $position);
+}
+
+@mixin icon40($indexX, $indexY, $offsetX: 0px, $offsetY: 0px, $target: $AFTER, $position: $ABSOLUTE) {
+  @include graphic(40px, 40px, $icon40offsetX, $icon40offsetY, $offsetX, $offsetY, $indexX, $indexY, $target, $position);
+}
+
+@mixin icon100($indexX, $indexY, $offsetX: 0px, $offsetY: 0px, $target: $AFTER, $position: $ABSOLUTE) {
+  @include graphic(100px, 100px, $icon100offsetX, $icon100offsetY, $offsetX, $offsetY, $indexX, $indexY, $target, $position);
+}
+
+
+
+//============================================================
+//
+// thinArrow
+//
+// @param index           :  Number
+// @param direction       :  @Left | @Right | @Down
+//
+//============================================================
+
+@mixin thinArrow($index, $direction, $length: 30px, $offsetX: 0px, $offsetY: 0px, $target: $INLINE) {
+  position: absolute;
+  @if ($direction == $LEFT) {
+    @include graphic($length, 30px, 0px, -250px, 0, $index, $offsetX, $offsetY, $target);
+  }
+
+  @if ($direction == $RIGHT) {
+    @include graphic($length, 30px, -120px + $length, -250px, 0, $index, $offsetX, $offsetY, $target);
+  }
+
+  @if ($direction == $DOWN) {
+    @include graphic(30px, $length, -120px, -310px + $length, $index, 0, $offsetX, $offsetY, $target);
+  }
+}
+
+
+//============================================================
+//
+// text
+//
+// @param family            : defaultFontFamily
+// @param size              : defaultFontSize
+// @param color             : defaultTextColor
+// @param weight            : normal | bold | number
+// @param style             : normal | italic
+// @param decoration        : none | underline | strikethrough
+// @param lineHeight        : normal | pixel value
+// @param variant           : normal | small-caps | inherit
+//
+//============================================================
+
+@mixin text($family: "", $size: "", $color: "", $weight: normal, $style: normal, $letterSpacing: 0px, $decoration: none, $lineHeight: "", $variant: normal) {
+  font-family: $family;
+  font-style: $style;
+  font-variant: $variant;
+  font-weight: $weight;
+  @if $lineHeight != "" {
+    @include font-size($size);
+    @include px-to-rem(line-height, $lineHeight);
+  }
+  @else {
+    @include set-font-size($size);
+  }
+  text-decoration: $decoration;
+  @if $color != "" {
+    color: $color;
+  }
+  @include px-to-rem(letter-spacing, $letterSpacing);
+  @include antialias;
+}
+
+
+//============================================================
+//
+// font-size
+//
+// @param size              : defaultFontSize
+// @param lineHeight        : normal | pixel value
+//
+//============================================================
+
+@mixin font-size($size, $lineHeight) {
+  font-size: $size;
+  // @include px-to-rem(font-size, $size);
+  @if $lineHeight != "" {
+    // @include px-to-rem(line-height, $lineHeight);
+    line-height: $lineHeight;
+  }
+}
+
+
+//============================================================
+//
+// antialias
+//
+// @param value         : true | false
+//
+//============================================================
+
+@mixin antialias($value: true) {
+  @if $value == true {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @else {
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+  }
+}
+
+
+
+//============================================================
+//
+// text-shadow-regular
+//
+// @param value         : true | false
+//
+//============================================================
+
+@mixin text-shadow-regular($color, $alpha: 1.0) {
+  @include text-shadow(rgba($color, $alpha) 0 0 1px);
+}
+
+
+
+
+
+//============================================================
+//
+// triangle
+//
+// @param dir           : String
+// @param color         : String
+// @param size          : Number
+// @param offsetX       : Number
+// @param offsetY       : Number
+//
+//============================================================
+
+@mixin triangle($dir, $color, $size, $offsetX: 0px, $offsetY: 0px){
+  @include triangleCommon();
+  border: $size solid transparent;
+
+  @if ($dir == $LEFT) {
+    margin-top: -$size + $offsetY;
+    margin-left: $offsetX;
+    border-right-color: $color;
+  }
+
+  @if ($dir == $RIGHT) {
+    margin-top: -$size + $offsetY;
+    margin-left: $offsetX;
+    border-left-color: $color;
+  }
+
+  @if ($dir == $UP) {
+    margin-left: -$size + $offsetX;
+    margin-top: $offsetY;
+    border-bottom-color: $color;
+  }
+
+  @if ($dir == $DOWN) {
+    margin-left: -$size + $offsetX;
+    margin-top: $offsetY;
+    border-top-color: $color;
+  }
+}
+
+@mixin triangleCommon() {
+  border: none;
+  position: absolute;
+  content: "";
+  height: 0;
+  width: 0;
+}
+
+
+
+//============================================================
+//
+// dash
+//
+// @param width         : px, em, %
+// @param color         : You know the score
+// @param align         : @Left|@Center|@Right
+//
+//============================================================
+
+@mixin dash($color, $width, $height: 2px, $offsetX: 0px, $offsetY: 0px, $alignment: $CENTER) {
+  position: relative;
+
+  &:after {
+    background: $color;
+    position: absolute;
+    bottom: $offsetY;
+    height: $height;
+    width: $width;
+    display: block;
+    content: '';
+
+    @if ($alignment == $LEFT) {
+      left: $offsetX;
+    }
+
+    @if ($alignment == $RIGHT) {
+      right: $offsetX;
+    }
+
+    @if ($alignment == $CENTER) {
+      margin-left: -$width/2;
+      left: 50%;
+    }
+  }
+}
+
+
+
+@mixin dashBEFORE ($color, $width, $height: 2px, $offsetX: 0px, $offsetY: 0px, $alignment: $CENTER) {
+  position: relative;
+
+  &:before {
+    background: $color;
+    position: absolute;
+    bottom: $offsetY;
+    height: $height;
+    width: $width;
+    display: block;
+    content: '';
+
+    @if ($alignment == $LEFT) {
+      left: $offsetX;
+    }
+
+
+    @if ($alignment == $RIGHT) {
+      right: $offsetX;
+    }
+
+
+    @if ($alignment == $CENTER) {
+      margin-left: -$width/2;
+      left: 50%;
+    }
+  }
+}
+
+
+@function calc-em($target-px, $context) {
+  @return ($target-px / $context) * 1em;
+}
+
+
+
+
+//============================================================
+//
+// Mixin for removing padding and margin
+//
+//============================================================
+
+@mixin removeSpace {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+//============================================================
+//
+// Mixins for setting size
+//
+//============================================================
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin fullSize() {
+  width: 100%;
+  height: 100%;
+}
+
+//============================================================
+//
+// Mixins for setting position
+//
+//============================================================
+
+@mixin absoluteTL($t: 0, $l: 0) {
+  position: absolute;
+  top: $t;
+  left: $l;
+}
+
+@mixin absoluteTR($t: 0, $r: 0) {
+  position: absolute;
+  top: $t;
+  right: $r;
+}
+
+@mixin fixedTL($t: 0, $l: 0) {
+  position: fixed;
+  top: $t;
+  left: $l;
+}
+
+@mixin fixedTR($t: 0, $r: 0) {
+  position: fixed;
+  top: $t;
+  right: $r;
+}
+
+@mixin absoluteAll {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+
+//============================================================
+//
+// Mixins transform related
+//
+//============================================================
+
+@mixin forceMatrix {
+  .csstransforms & {
+    @include transform(translate(0px, 0px));
+  }
+  .csstransforms3d & {
+    @include transform(translate3d(0px, 0px, 0px));
+    @include backface-visibility(hidden);
+  }
+}
+
+
+//============================================================
+//
+// Mixins background related
+//
+//============================================================
+
+@mixin fullBackground {
+  background-repeat: no-repeat;
+  background-position: center center;
+  @include background-size(cover);
+}
+
+@mixin topBackground {
+  background-repeat: no-repeat;
+  background-position: center top;
+  @include background-size(cover);
+}
+
+@mixin svgBackground($url, $fallbackURL) {
+  background-image:  url('#{$fallbackURL}');
+  background-image:  none, url('#{$url}');
+}
+
+//============================================================
+//
+// Mixin for calculating REM
+//
+//============================================================
+
+// Given pixel inputs, print rem values with pixel fallbacks.
+// Based on Bitmanic's rem mixin (https://github.com/bitmanic/rem)
+
+// $property  - The css property name
+// $px-values - The value or values (space-separated list) for $property, in pixels
+@mixin px-to-rem($property, $px-values) {
+  // Number of pixels in 1rem (default: 16px/rem)
+  // When converting to rems, we must divide by this ratio.
+  $px-per-rem: $BASE_FONT_SIZE / 1rem;
+
+  // Print the pixel fallback declaration first so we can override it in capable browsers.
+  #{$property}: $px-values;
+
+  // If there is only one value, print the declaration with the value converted to rems.
+  @if type-of($px-values) == "number" {
+    #{$property}: $px-values / $px-per-rem;
+  }
+  @else {
+    // Otherwise, we've got a list and we'll need to convert each value in turn.
+    // Create an empty list that we can dump values into.
+    $rem-values: ();
+    @each $value in $px-values {
+      // If the value is zero, a string or a color, leave it be.
+      @if strip-units($value) == 0 or type-of($value) == "string" or type-of($value) == "color" {
+        $rem-values: append($rem-values, $value);
+      }
+      @else {
+        $rem-values: append($rem-values, $value / $px-per-rem);
+      }
+    }
+
+    // Print the property and its list of converted values.
+    #{$property}: $rem-values;
+  }
+}
+
+
+//============================================================
+//
+// Mixins for percentages
+//
+//============================================================
+
+@mixin magicalRatio($width, $height) {
+  height: 0;
+  padding-top: $height/$width * 100%;
+}
+
+@mixin percentCalc($prop, $inner, $outer) {
+  #{$prop}: $inner/$outer * 100%;
+}
+
+//============================================================
+//
+// xCenterElement
+//
+// Horitzontal centering
+//
+//============================================================
+
+@mixin xCenterElement{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+//============================================================
+//
+// centerAbsoluteStatic
+//
+//============================================================
+
+@mixin centerAbsoluteStaticSize($w, $h) {
+  @include size($w, $h);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -$h/2;
+  margin-left: -$w/2;
+}
+
+//============================================================
+//
+// Mixins for UI
+//
+//============================================================
+
+@mixin notSelectable($cursor: default) {
+  @include user-select(none);
+  cursor: $cursor;
+}
+
+//============================================================
+//
+// Mixins for fixes
+//
+//============================================================
+
+@mixin clearfix {
+  zoom:1;
+  &:before, &:after {
+      content: "\0020"; 
+      display: block; 
+      height: 0; 
+      overflow: hidden; 
+  }
+  &:after {
+      clear: both;
+  }
+}
+
+@mixin column-break-inside($break) {
+  -webkit-column-break-inside: $break;
+  page-break-inside: $break;
+  break-inside: $break;
+}
+
+//============================================================
+//
+// :hover
+//
+// States
+//
+//============================================================
+
+@mixin hover{
+  &:hover{
+    @include transition(color .3s $easeInOutQuad);
+    color: $GREY_HOVER_LINKS;
+  }
+}
+
+@mixin hoverBorder{
+  &:hover{
+    @include transition(color .3s $easeInOutQuad);
+     &:before {
+        border-color: $GREY_HOVER_LINKS;
+    }   
+  }
+}
+
+//============================================================
+//
+// Mixins for responsive
+//
+//============================================================
+
+@mixin small-mobile-menu-screen {
+  @media screen and ( max-width: 450px ) and ( max-height: 430px ) {
+    @content;
+  }
+}
+
+@mixin mobile-screen {
+  @media screen and (max-width: $MOBILE_WIDTH), screen and (max-height: $MOBILE_WIDTH) and (orientation:landscape) {
+    @content;
+  }
+}
+
+@mixin tablet-screen {
+  @media screen and (max-width: $TABLET_WIDTH) {
+    @content;
+  }
+}
+
+
+@mixin mobile-first-tablet {
+  @media screen and (min-width: $MOBILE_WIDTH + 1px) {
+    @content;
+  }
+}
+
+@mixin mobile-first-desktop {
+  @media screen and (min-width: $TABLET_WIDTH + 1px) {
+    @content;
+  }
+}

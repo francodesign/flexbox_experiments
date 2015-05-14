@@ -1,0 +1,146 @@
+//----------------------------------------
+// Dimensions
+//----------------------------------------
+
+$BASE_FONT_SIZE: 16px !default;
+$BASE_LINE_HEIGHT: 26px !default;
+$REM_LINE_HEIGHT: $BASE_LINE_HEIGHT / $BASE_FONT_SIZE * 1rem;
+
+$MAIN_MENU_HEIGHT: 50px;
+
+
+//----------------------------------------
+// Responsive
+//----------------------------------------
+
+$MOBILE_SMALL: 320px;
+$MOBILE_SMALL_HEIGHT: 480px;
+$MOBILE_WIDTH: 480px;
+$MOBILE_MEDIUM: 560px;
+$MOBILE_LARGE: 640px;
+$TABLET_WIDTH: 768px;
+$DESKTOP_WIDTH: 1024px;
+
+$MOBILE_MENU_BP: 950px;
+
+$DESKTOP_LARGE: 1280px;
+
+$MAX_CONTENT_BP: 1440px;
+
+
+//----------------------------------------
+// Fonts
+//----------------------------------------
+
+// TODO: those need to be updated once we get final fonts
+$PRATT: 'pratt';
+$PRATT_BOLD: 'pratt-bold';
+$UNIVERS: 'univers';
+$UNIVERS_LT: 'univers-lt';
+
+$HEADER_FONT: $UNIVERS, verdana, sans-serif;
+$HEADER_FONT_LT: $UNIVERS_LT, verdana, sans-serif;
+$BODY_FONT: $PRATT, Helvetica, Arial, serif;
+
+
+//----------------------------------------
+// Colors
+//----------------------------------------
+
+$BLACK: #040206;
+$WHITE: #FEFCFD;
+$WHITE_DARKER: darken($WHITE, 22%);
+$LIGHT_BLACK: #191B1C;
+$GOLD: #C8AF72;
+$GOLD_FADED: transparentize($GOLD, 0.8);
+
+$COLOR_FACEBOOK: #3C5A9B;
+$COLOR_PINTEREST: #C42628;
+$COLOR_TUMBLR: #395E7E;
+$COLOR_GPLUS: #DD4B39;
+$COLOR_TWITTER: #2EACF0;
+$COLOR_LINKEDIN: #007BB6;
+
+$DEFAULT_LINK_COLOR: #5CA6BE;
+
+$PURPLE_LIGHT: #7C788F;
+$PURPLE_DARK: #68647B;
+
+$BLUE_LIGHT: #50C0E9;
+$BLUE_SECTION: #12a0d5;
+$BLUE_DARK:#134151;
+$BLUE_DARK-FIGURES:#23647c;
+
+
+$GREY_HOVER_LINKS:#e8e6e1;
+$GREY_CUT_OUT:#525252;
+$GREY_MENU_HOVER:#E8E6E1;
+
+
+$HEALTH:#ED7F68;
+$LEARNING:#C2AE94;
+$ENERGY:#CA8150;
+$HOUSING:#8FD982;
+$FOOD:#CA8250;
+$MOBILITY:#9D9B81;
+$WORK:#485E66;
+$MANUFACTURING:#9CE2D4;
+$ACTION:#435155;
+
+$ENVIRONMENT:#616870;
+
+//----------------------------------------
+// Font Weights
+//----------------------------------------
+
+$THIN: 100;
+$LIGHT: 200;
+$REGULAR: 400;
+$MEDIUM: 500;
+$BOLD: 700;
+$EXTRABOLD: 900;
+
+//----------------------------------------
+// Directions
+//----------------------------------------
+
+$LEFT: left;
+$RIGHT: right;
+$UP: up;
+$DOWN: down;
+
+
+//----------------------------------------
+// Alignments
+//----------------------------------------
+
+$CENTER: center;
+
+
+//----------------------------------------
+// Targets
+//----------------------------------------
+
+$INLINE: inline;
+$BEFORE: before;
+$AFTER: after;
+
+
+//----------------------------------------
+// Positions
+//----------------------------------------
+
+$RELATIVE: relative;
+$ABSOLUTE: absolute;
+$FIXED: fixed;
+
+
+//----------------------------------------
+// Z-index Depth
+//----------------------------------------
+
+$PRELOADER_Z: 200;
+$MENU_Z: 100;
+$LOADER_Z: 50;
+$COVER_Z: 25;
+$PAGE_Z: 10;
