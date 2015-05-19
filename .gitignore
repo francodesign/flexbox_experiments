@@ -1,2 +1,26 @@
-.sass-cache
+# Ignore paths that contain generated content.
+deploy/scripts/
+deploy/styles/
+dist/
+distribution/
+production/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build Files and logs
+node_modules
+*.sass-cache
 *.css.map
+*.project
+*.log
+min
+
+# CodeKit
+*.codekit-cache
